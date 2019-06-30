@@ -1,3 +1,7 @@
+#pasang tkinter buat filedialog
+import tkinter as tk
+from tkinter import filedialog
+#asli dari martin wang
 import numpy
 import commonFunction
 import interface
@@ -9,6 +13,8 @@ import interface
 
 
 def get_merge(start_index, end_index, data, nb_jobs):
+    #note:
+    'Fungsi untuk misahin data dalam teks, file input harus sesuai format contoh'
     data_prime = numpy.zeros(nb_jobs)
     for j in range(nb_jobs):
         data_prime[j] = data[start_index][j]
@@ -20,6 +26,8 @@ def get_merge(start_index, end_index, data, nb_jobs):
 
 
 def cds(data, nb_machines, nb_jobs):
+    #note:
+    'algoritma cds, lebih detailnya cek commonFunction.py'
     c_max_best = float("inf")
     for k in range(1, nb_machines):
         p1_prime = get_merge(0, k, data, nb_jobs)
@@ -35,9 +43,22 @@ def cds(data, nb_machines, nb_jobs):
 
     return best_seq, c_max_best
 
+#window background tkinter diumpetin dulu
+root = tk.Tk()
+root.withdraw()
+print('MASUKAN FILE BEREKSTENSI .txt DENGAN FORMAT SESUAI FORMAT.TXT')
+file = filedialog.askopenfilename(
+    initialdir = "/",
+    title = "Pilih File",
+    filetypes=(
+        ("Text files","*.txt"),
+        ),
+    )
 
-# run CDS
-nbm, nbj, p_ij = commonFunction.read_from_file("example2.txt")
+#baca file yang diinput
+nbm, nbj, p_ij = commonFunction.read_from_file(file)
+
+#run cds
 seq, cmax = cds(p_ij, nbm, nbj)
 print("nbMachines:", nbm)
 print("nbJobs:", nbj)
